@@ -1,4 +1,8 @@
+using Library_Management_System;
 using Library_Management_System.Data;
+using Library_Management_System.Entities;
+using Library_Management_System.Services;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -7,9 +11,12 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
-builder.Services.AddDbContext<LibraryManagementDBContext>(optionBuilder =>
+
+builder.Services.AddDbContext<LibraryManagementDBContext>((serviceProvider, optionBuilder) =>
 {
     optionBuilder.UseSqlServer(builder.Configuration.GetConnectionString("Database"));
+
+    optionBuilder.AddInterceptors(new AuditInterceptor());
 });
 
 var app = builder.Build();

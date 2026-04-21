@@ -96,3 +96,11 @@ coverage-report/
 *.bak
 *.orig
 *.rej
+
+# Ignore local database files and build artifacts
+*.db
+*.sqlite
+*.mdf
+*.ldf
+bin/
+obj/
