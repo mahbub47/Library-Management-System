@@ -17,7 +17,7 @@ public class BookManagementService : IBookManagementService
             Title = dto.Title,
             Author = dto.Author,
             ISBN = dto.ISBN,
-            AvailableCopies = dto.AvailableCopies,
+            AvailableCopies = dto.AvailableCopies!.Value
         };
         var createdBook = await _bookRepository.AddBookAsync(newBook);
         return new BookResponseDto
@@ -79,7 +79,7 @@ public class BookManagementService : IBookManagementService
         if (existingBook == null)
             return null!;
         existingBook.Title = dto.Title ?? existingBook.Title;
-        existingBook.AvailableCopies = dto.AvailableCopies;
+        existingBook.AvailableCopies = dto.AvailableCopies ?? existingBook.AvailableCopies;
         var updatedBook = await _bookRepository.UpdateBookAsync(existingBook);
         return new BookResponseDto
         {

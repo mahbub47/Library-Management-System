@@ -1,6 +1,7 @@
 ﻿using Library_Management_System.Services.Dtos;
 using Library_Management_System.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Library_Management_System.Controllers;
 
@@ -24,7 +25,7 @@ public class MembersController : ControllerBase
     public async Task<IActionResult> GetAll()
     {
         var members = await _service.GetAllMemberAsync();
-        if(members == null)
+        if(members.IsNullOrEmpty())
             return NotFound("No member found");
         return Ok(members);
     }
@@ -54,5 +55,13 @@ public class MembersController : ControllerBase
         if (deactivated)
             return Ok($"Membership deactivated for id {memberId}");
         return BadRequest();
+    }
+
+    [HttpDelete("{memberId}")]
+    public async Task<IActionResult> Delete([FromRoute]int memberId)
+    {
+        var deleted = await _service.DeleteMemberAsync(memberId);
+        if (!deleted) return NotFound("User not found");
+        return NoContent();
     }
 }

@@ -19,6 +19,10 @@ public class LibraryManagementDBContext : DbContext
 
             entity.Property(b => b.Title).HasMaxLength(150).IsRequired(true);
 
+            entity.Property(b => b.Author).IsRequired(true);
+
+            entity.Property(b => b.AvailableCopies).IsRequired(true);
+
             entity.Property(b => b.ISBN).IsRequired(true);
 
             entity.HasIndex(b => b.ISBN).IsUnique(true);
@@ -28,7 +32,9 @@ public class LibraryManagementDBContext : DbContext
 
         modelBuilder.Entity<Member>(entity =>
         {
-            entity.Property(m => m.IsActive).HasDefaultValue(true);
+            entity.Property(m => m.IsActive).HasDefaultValue(true).IsRequired(true);
+
+            entity.Property(m => m.FullName).IsRequired(true);
 
             entity.Property(m => m.Email).IsRequired(true).HasMaxLength(200);
 
@@ -41,6 +47,14 @@ public class LibraryManagementDBContext : DbContext
 
         modelBuilder.Entity<Loan>(entity =>
         {
+            entity.Property(l => l.MemberId).IsRequired(true);
+
+            entity.Property(l => l.BookId).IsRequired(true);
+
+            entity.Property(l => l.DueDate).IsRequired(true);
+
+            entity.Property(l => l.BorrowedAt).IsRequired(true);
+
             entity.HasOne<Member>(l => l.Member).WithMany(m => m.Loans).HasForeignKey(l => l.MemberId);
 
             entity.HasOne<Book>(l => l.Book).WithMany(b => b.Loans).HasForeignKey(l => l.BookId);

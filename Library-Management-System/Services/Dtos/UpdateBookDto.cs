@@ -2,6 +2,6 @@
 
 public class UpdateBookDto
 {
-    public string Title { get; set; } = string.Empty;
-    public int AvailableCopies { get; set; }
+    public string? Title { get; set; }
+    public int? AvailableCopies { get; set; }
 }

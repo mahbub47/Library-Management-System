@@ -80,10 +80,14 @@ public class MemberManagementService : IMemberManagementService
     public async Task<MemberResponseDto> UpdateMemberAsync(int memberId, UpdateMemberDto dto)
     {
         var existingMember = await _memberRepository.GetMemberByIdAsync(memberId);
+
         if(existingMember == null) return null!;
+
         existingMember.FullName = dto.FullName ?? existingMember.FullName;
         existingMember.Email = dto.Email ?? existingMember.Email;
+
         var updatedMember = await _memberRepository.UpdateMemberAsync(existingMember);
+
         return new MemberResponseDto
         {
             Id = updatedMember.Id,

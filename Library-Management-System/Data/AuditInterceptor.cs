@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 
-namespace Library_Management_System.Services;
+namespace Library_Management_System.Data;
 
 public class AuditInterceptor : SaveChangesInterceptor
 {

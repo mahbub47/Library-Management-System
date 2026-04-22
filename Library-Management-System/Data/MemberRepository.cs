@@ -24,12 +24,12 @@ public class MemberRepository : IMemberRepository
 
     public async Task<IEnumerable<Member>> GetAllMembersAsync()
     {
-        return await _context.Members.ToListAsync();
+        return await _context.Members.Include(m => m.Loans).ToListAsync();
     }
 
     public async Task<Member> GetMemberByIdAsync(int memberId)
     {
-        return await _context.Members.FindAsync(memberId);
+        return await _context.Members.Include(m => m.Loans).Where(m => m.Id == memberId).FirstOrDefaultAsync();
     }
 
     public async Task<Member> UpdateMemberAsync(Member member)

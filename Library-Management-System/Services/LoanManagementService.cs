@@ -28,8 +28,8 @@ public class LoanManagementService : ILoanManagementService
 
     public async Task<LoanResponseDto> CreateLoanAsync(CreateLoanDto dto)
     {
-        var book = await _bookRepository.GetBookByIdAsync(dto.BookId);
-        var member = await _memberRepository.GetMemberByIdAsync(dto.MemberId);
+        var book = await _bookRepository.GetBookByIdAsync(dto.BookId!.Value);
+        var member = await _memberRepository.GetMemberByIdAsync(dto.MemberId!.Value);
 
         if (book == null) return null!;
 
@@ -43,8 +43,8 @@ public class LoanManagementService : ILoanManagementService
 
         var newLoan = new Loan
         {
-            MemberId = dto.MemberId,
-            BookId = dto.BookId,
+            MemberId = dto.MemberId!.Value,
+            BookId = dto.BookId!.Value,
             BorrowedAt = DateTime.UtcNow,
             DueDate = dto.DueDate,
         };
