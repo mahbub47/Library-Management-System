@@ -9,13 +9,13 @@ namespace Library_Management_System.Controllers;
 [Route("api/[controller]")]
 public class BooksController : ControllerBase
 {
-    private readonly ILibraryManagementService _service;
-    public BooksController(ILibraryManagementService service) => _service = service;
+    private readonly IBookManagementService _service;
+    public BooksController(IBookManagementService service) => _service = service;
     [HttpPost]
     public async Task<IActionResult> Create([FromBody]CreateBookDto dto)
     {
         var createdBook = await _service.CreateBookAsync(dto);
-        return CreatedAtAction(nameof(GetById), new { Id = createdBook.Id }, createdBook);
+        return CreatedAtAction(nameof(GetById), new { bookId = createdBook.Id }, createdBook);
     }
 
     [HttpGet("{bookId}")]

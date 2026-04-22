@@ -12,8 +12,11 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
-builder.Services.AddScoped<ILibraryRepository, LibraryRepository>();
-builder.Services.AddScoped<ILibraryManagementService, LibraryManagementService>();
+builder.Services.AddScoped<IBookManagementService, BookManagementService>();
+builder.Services.AddScoped<IMemberManagementService, MemberManagementService>();
+
+builder.Services.AddScoped<IBookRepository, BookRepository>();
+builder.Services.AddScoped<IMemberRepository, MemberRepository>();
 
 
 builder.Services.AddDbContext<LibraryManagementDBContext>((serviceProvider, optionBuilder) =>

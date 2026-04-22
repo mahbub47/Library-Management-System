@@ -28,6 +28,8 @@ public class LibraryManagementDBContext : DbContext
 
         modelBuilder.Entity<Member>(entity =>
         {
+            entity.Property(m => m.IsActive).HasDefaultValue(true);
+
             entity.Property(m => m.Email).IsRequired(true).HasMaxLength(200);
 
             entity.HasIndex(m => m.Email).IsUnique(true);
@@ -35,7 +37,6 @@ public class LibraryManagementDBContext : DbContext
             entity.HasQueryFilter(m => m.IsActive);
 
             entity.HasMany<Loan>(m => m.Loans).WithOne(l => l.Member).HasForeignKey(l => l.MemberId).OnDelete(DeleteBehavior.Cascade);
-
         });
 
         modelBuilder.Entity<Loan>(entity =>

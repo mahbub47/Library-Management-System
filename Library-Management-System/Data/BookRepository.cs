@@ -4,10 +4,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Library_Management_System.Data;
 
-public class LibraryRepository : ILibraryRepository
+public class BookRepository : IBookRepository
 {
     private readonly LibraryManagementDBContext _context;
-    public LibraryRepository(LibraryManagementDBContext context) => _context = context;
+    public BookRepository(LibraryManagementDBContext context) => _context = context;
     public async Task<Book> AddBookAsync(Book book)
     {
         await _context.Books.AddAsync(book);
@@ -16,21 +16,16 @@ public class LibraryRepository : ILibraryRepository
         return book;
     }
 
-    public async Task<Member> AddMemberAsync(Member member)
+    public async Task DeleteBookAsync(Book book)
     {
-        await _context.Members.AddAsync(member);
+        _context.Remove(book);
         await _context.SaveChangesAsync();
-        return member;
+        return;
     }
 
     public async Task<IEnumerable<Book>> GetAllBooksAsync()
     {
         return await _context.Books.ToListAsync();
-    }
-
-    public Task<IEnumerable<Member>> GetAllMembersAsync()
-    {
-        throw new NotImplementedException();
     }
 
     public async Task<Book> GetBookByIdAsync(int bookId)
@@ -41,24 +36,10 @@ public class LibraryRepository : ILibraryRepository
         return book;
     }
 
-    public Task<Member> GetMemberByIdAsync(int memberId)
-    {
-        throw new NotImplementedException();
-    }
-
     public async Task<Book> UpdateBookAsync(Book book)
     {
         _context.Books.Update(book);
+        await _context.SaveChangesAsync();
         return book;
-    }
-
-    public Task<Member> UpdateMemberAsync()
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task<Member> UpdateMemberAsync(Member member)
-    {
-        throw new NotImplementedException();
     }
 }
