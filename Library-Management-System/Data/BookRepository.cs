@@ -29,6 +29,11 @@ public class BookRepository : IBookRepository
         return await _context.Books.ToListAsync();
     }
 
+    public async Task<IEnumerable<Loan>> GetAllLoansByBookId(int bookId)
+    {
+        return await _context.Loans.Include(l => l.Book).Include(l => l.Member).Where(l => l.BookId == bookId).ToListAsync();
+    }
+
     public async Task<Book> GetBookByIdAsync(int bookId)
     {
         var book = await _context.Books.FindAsync(bookId);

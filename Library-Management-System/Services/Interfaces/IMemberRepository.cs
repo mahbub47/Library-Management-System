@@ -9,4 +9,5 @@ public interface IMemberRepository
     Task<Member> GetMemberByIdAsync(int memberId);
     Task<IEnumerable<Member>> GetAllMembersAsync();
     Task DeleteMemberAsync(Member member);
+    Task<IEnumerable<Loan>> GetAllLoansByMember(int memberId);
 }

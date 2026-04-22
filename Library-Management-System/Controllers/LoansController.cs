@@ -29,6 +29,20 @@ public class LoansController : ControllerBase
         return Ok(loan);
     }
 
+    [HttpGet("search")]
+    public async Task<IActionResult> Search(
+        [FromQuery] string? bookName,
+        [FromQuery] string? memberName,
+        [FromQuery] int? bookId, 
+        [FromQuery] int? memberId, 
+        [FromQuery] string? authorName, 
+        [FromQuery] string? isbn)
+    {
+        var loans = await _service.SearchLoanAsync(bookName, memberName, bookId, memberId, authorName, isbn);
+        if (loans.IsNullOrEmpty()) return NotFound();
+        return Ok(loans);
+    }
+
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {

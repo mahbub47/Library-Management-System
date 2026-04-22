@@ -22,6 +22,11 @@ public class MemberRepository : IMemberRepository
         return;
     }
 
+    public async Task<IEnumerable<Loan>> GetAllLoansByMember(int memberId)
+    {
+        return await _context.Loans.Include(l => l.Book).Include(l => l.Member).Where(l => l.MemberId == memberId).ToListAsync();
+    }
+
     public async Task<IEnumerable<Member>> GetAllMembersAsync()
     {
         return await _context.Members.Include(m => m.Loans).ToListAsync();

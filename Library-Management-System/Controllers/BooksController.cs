@@ -28,7 +28,7 @@ public class BooksController : ControllerBase
     }
 
     [HttpGet("search")]
-    public async Task<IActionResult> Search(string? title, string? author)
+    public async Task<IActionResult> Search([FromQuery] string? title, [FromQuery] string? author)
     {
         var books = await _service.SearchBookAsync(title, author);
         if (books.IsNullOrEmpty()) return NotFound();
@@ -53,5 +53,13 @@ public class BooksController : ControllerBase
             return NotFound($"No book found with the id {bookId}");
 
         return Ok(book);
+    }
+
+    [HttpGet("{bookId}/loans")]
+    public async Task<IActionResult> GetAllLoans([FromRoute] int bookId)
+    {
+        var loans = await _service.GetAllLoansByBookId(bookId);
+        if (loans.IsNullOrEmpty()) return NotFound();
+        return Ok(loans);
     }
 }

@@ -10,4 +10,5 @@ public interface IMemberManagementService
     Task<MemberResponseDto> UpdateMemberAsync(int memberId, UpdateMemberDto dto);
     Task<MemberResponseDto> GetMemberByIdAsync(int memberId);
     Task<IEnumerable<MemberResponseDto>> GetAllMemberAsync();
+    Task<IEnumerable<LoanResponseDto>> GetAllLoansByMemberId(int memberId);
 }

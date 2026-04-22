@@ -59,6 +59,24 @@ public class BookManagementService : IBookManagementService
         return responseBooks;
     }
 
+    public async Task<IEnumerable<LoanResponseDto>> GetAllLoansByBookId(int bookId)
+    {
+        var loans = await _bookRepository.GetAllLoansByBookId(bookId);
+        var loansResponse = new List<LoanResponseDto>();
+        foreach (var loan in loans)
+        {
+            loansResponse.Add(new LoanResponseDto
+            {
+                Id = loan.Id,
+                BookName = loan.Book.Title,
+                MemberName = loan.Member.FullName,
+                BorrowedAt = loan.BorrowedAt,
+                DueDate = loan.DueDate,
+            });
+        }
+        return loansResponse;
+    }
+
     public async Task<BookResponseDto> GetBookByIdAsync(int bookId)
     {
         var book = await _bookRepository.GetBookByIdAsync(bookId);

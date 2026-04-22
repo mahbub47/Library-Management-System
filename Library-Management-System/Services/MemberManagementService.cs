@@ -47,6 +47,24 @@ public class MemberManagementService : IMemberManagementService
         return true;
     }
 
+    public async Task<IEnumerable<LoanResponseDto>> GetAllLoansByMemberId(int memberId)
+    {
+        var loans = await _memberRepository.GetAllLoansByMember(memberId);
+        var loansResponse = new List<LoanResponseDto>();
+        foreach (var loan in loans)
+        {
+            loansResponse.Add(new LoanResponseDto
+            {
+                Id = loan.Id,
+                BookName = loan.Book.Title,
+                MemberName = loan.Member.FullName,
+                BorrowedAt = loan.BorrowedAt,
+                DueDate = loan.DueDate,
+            });
+        }
+        return loansResponse;
+    }
+
     public async Task<IEnumerable<MemberResponseDto>> GetAllMemberAsync()
     {
         var members = await _memberRepository.GetAllMembersAsync();

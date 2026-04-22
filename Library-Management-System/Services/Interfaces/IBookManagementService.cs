@@ -10,4 +10,5 @@ public interface IBookManagementService
     Task<BookResponseDto> GetBookByIdAsync(int bookId);
     Task<IEnumerable<BookResponseDto>> GetAllBooksAsync();
     Task<IEnumerable<BookResponseDto>> SearchBookAsync(string? title, string? author);
+    Task<IEnumerable<LoanResponseDto>> GetAllLoansByBookId(int bookId);
 }

@@ -64,4 +64,12 @@ public class MembersController : ControllerBase
         if (!deleted) return NotFound("User not found");
         return NoContent();
     }
+
+    [HttpGet("{memberId}/loans")]
+    public async Task<IActionResult> GetAllLoans([FromRoute]int memberId)
+    {
+        var loans = await _service.GetAllLoansByMemberId(memberId);
+        if (loans.IsNullOrEmpty()) return NotFound();
+        return Ok(loans);
+    }
 }

@@ -97,6 +97,31 @@ public class LoanManagementService : ILoanManagementService
         };
     }
 
+    public async Task<IEnumerable<LoanResponseDto>> SearchLoanAsync(
+        string? bookName, 
+        string? memberName, 
+        int? bookId, 
+        int? memberId, 
+        string? authorName, 
+        string? isbn)
+    {
+        var loans = await _loanRepository.SearchLoanAsync(bookName, memberName, bookId, memberId, authorName, isbn);
+        var responseLoans = new List<LoanResponseDto>();
+        foreach(var loan in loans)
+        {
+            responseLoans.Add(new LoanResponseDto
+            {
+                Id = loan.Id,
+                MemberName = loan.Member.FullName,
+                BookName = loan.Book.Title,
+                BorrowedAt = loan.BorrowedAt,
+                DueDate = loan.DueDate,
+            });
+        }
+
+        return responseLoans;
+    }
+
     public async Task<LoanResponseDto> UpdateLoanAsync(int laonId, UpdateLoanDto dto)
     {
         var existingLoan = await _loanRepository.GetLoanByIdAsync(laonId);

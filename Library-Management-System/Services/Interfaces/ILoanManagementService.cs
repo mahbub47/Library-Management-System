@@ -9,4 +9,5 @@ public interface ILoanManagementService
     Task<LoanResponseDto> UpdateLoanAsync(int loanId, UpdateLoanDto dto);
     Task<LoanResponseDto> GetLoanByIdAsync(int loanId);
     Task<IEnumerable<LoanResponseDto>> GetAllLoansAsync();
+    Task<IEnumerable<LoanResponseDto>> SearchLoanAsync(string? bookName, string? memberName, int? bookId, int? memberId, string? authorName, string? isbn);
 }
