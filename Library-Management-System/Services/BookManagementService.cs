@@ -73,6 +73,23 @@ public class BookManagementService : IBookManagementService
         };
     }
 
+    public async Task<IEnumerable<BookResponseDto>> SearchBookAsync(string? title, string? author)
+    {
+        var books = await _bookRepository.SearchBookAsync(title, author);
+        var responseBooks = new List<BookResponseDto>();
+        foreach (var book in books)
+        {
+            responseBooks.Add(new BookResponseDto
+            {
+                Id = book.Id,
+                Title = book.Title,
+                Author = book.Author,
+                ISBN = book.ISBN
+            });
+        }
+        return responseBooks;
+    }
+
     public async Task<BookResponseDto> UpdateBookAsync(int bookId, UpdateBookDto dto)
     {
         var existingBook = await _bookRepository.GetBookByIdAsync(bookId);

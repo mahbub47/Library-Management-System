@@ -27,6 +27,14 @@ public class BooksController : ControllerBase
         return Ok(book);
     }
 
+    [HttpGet("search")]
+    public async Task<IActionResult> Search(string? title, string? author)
+    {
+        var books = await _service.SearchBookAsync(title, author);
+        if (books.IsNullOrEmpty()) return NotFound();
+        return Ok(books);
+    }
+
     [HttpGet]
     public async Task<IActionResult> GetAllBooks()
     {

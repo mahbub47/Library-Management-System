@@ -1,6 +1,7 @@
 ﻿using Library_Management_System.Entities;
 using Library_Management_System.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Library_Management_System.Data;
 
@@ -34,6 +35,19 @@ public class BookRepository : IBookRepository
         if (book == null)
             return null!;
         return book;
+    }
+
+    public async Task<IEnumerable<Book>> SearchBookAsync(string? title, string? author)
+    {
+        var query = _context.Books.AsQueryable();
+
+        if(!title.IsNullOrEmpty())
+            query = query.Where(b => b.Title == title);
+
+        if (!author.IsNullOrEmpty())
+            query = query.Where(b => b.Author == author);
+
+        return await query.ToListAsync();
     }
 
     public async Task<Book> UpdateBookAsync(Book book)

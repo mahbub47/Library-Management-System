@@ -9,4 +9,5 @@ public interface IBookRepository
     Task<IEnumerable<Book>> GetAllBooksAsync();
     Task<Book> GetBookByIdAsync(int bookId);
     Task DeleteBookAsync(Book book);
+    Task<IEnumerable<Book>> SearchBookAsync(string? title, string? author);
 }
