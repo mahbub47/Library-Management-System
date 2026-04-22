@@ -10,15 +10,25 @@ public class LoanRepository : ILoanRepository
     public LoanRepository(LibraryManagementDBContext context) => _context = context;
     public async Task<Loan> AddLoanAsync(Loan loan)
     {
+        using var transaction = await _context.Database.BeginTransactionAsync();
+
         await _context.AddAsync(loan);
+        await _context.Books.Where(b => b.Id == loan.BookId).ExecuteUpdateAsync(b => b.SetProperty(b => b.AvailableCopies, b => b.AvailableCopies - 1));
+
         await _context.SaveChangesAsync();
+
+        await transaction.CommitAsync();
+
         return loan;
     }
 
     public async Task DeleteLoanAsync(Loan loan)
     {
+        using var transaction = await _context.Database.BeginTransactionAsync();
         _context.Remove(loan);
+        await _context.Books.Where(b => b.Id == loan.BookId).ExecuteUpdateAsync(b => b.SetProperty(b => b.AvailableCopies, b => b.AvailableCopies + 1));
         await _context.SaveChangesAsync();
+        await transaction.CommitAsync();
         return;
     }
 

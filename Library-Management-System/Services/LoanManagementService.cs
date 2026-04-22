@@ -1,4 +1,5 @@
-﻿using Library_Management_System.Entities;
+﻿using Library_Management_System.Data;
+using Library_Management_System.Entities;
 using Library_Management_System.Services.Dtos;
 using Library_Management_System.Services.Interfaces;
 
@@ -33,11 +34,11 @@ public class LoanManagementService : ILoanManagementService
 
         if (book == null) return null!;
 
-        if(member == null) return null!;
+        if (member == null) return null!;
 
         if (book.AvailableCopies == 0) return null!;
 
-        if(!member.IsActive) return null!;
+        if (!member.IsActive) return null!;
 
         if (member.Loans.FirstOrDefault(l => l.BookId == dto.BookId) != null) return null!;
 
@@ -48,10 +49,11 @@ public class LoanManagementService : ILoanManagementService
             BorrowedAt = DateTime.UtcNow,
             DueDate = dto.DueDate,
         };
+
         var createdLoan = await _loanRepository.AddLoanAsync(newLoan);
+
         if (createdLoan == null) return null!;
-        book.AvailableCopies -= 1;
-        await _bookRepository.UpdateBookAsync(book);
+
         return new LoanResponseDto
         {
             Id = createdLoan.Id,
@@ -60,6 +62,7 @@ public class LoanManagementService : ILoanManagementService
             BorrowedAt = createdLoan.BorrowedAt,
             DueDate = createdLoan.DueDate,
         };
+        
     }
 
     public async Task<IEnumerable<LoanResponseDto>> GetAllLoansAsync()
